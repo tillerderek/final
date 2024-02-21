@@ -1,0 +1,20 @@
+# .gitignore
+
+# Ignore local development settings
+settings/local.py
+
+# Ignore temporary files and directories
+__pycache__/
+*.pyc
+*.pyo
+
+# Ignore virtual environment
+venv/
+env/
+
+# Ignore secret files containing sensitive information
+.env
+
+Dockerfile
+docker-compose.yaml
+.env

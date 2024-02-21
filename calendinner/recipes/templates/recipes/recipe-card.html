@@ -1,0 +1,15 @@
+<div id="card">
+  {% load static %}
+  <h3>{{ recipe.title }}</h3>
+  <p>{{ recipe.description }}</p>
+  
+  {% if recipe.image_filename == 'REMOVE THIS' %}
+    <a href="#">
+      <img src="{% static recipe.image_filename %}.jpg">
+    </a>
+  {% else %}
+    <a href="#">
+      <img src="https://placehold.co/500x500" height="100" width="100">
+    </a>
+  {% endif %}
+</div>

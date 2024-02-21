@@ -1,0 +1,16 @@
+FROM python:3.8
+
+WORKDIR /app
+
+COPY . /app
+
+# Install dependencies
+RUN pip install Django mysqlclient
+
+# # Check if the superuser exists and create it if not
+# RUN python manage.py shell -c "from django.contrib.auth.models import User; User.objects.create_superuser('derek', 'tillerderek@gmail.com', 'zany1061')" || true
+
+# Run migrations
+RUN python manage.py migrate
+
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8001"]

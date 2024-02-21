@@ -1,0 +1,23 @@
+* {
+  box-sizing: border-box;
+}
+
+#grid {
+  display: grid;
+  gap: 2rem;
+}
+
+#card {
+  display: flex;  /* or use "grid" for grid layout */
+  flex-wrap: wrap;  /* or "grid-template-columns" for grid layout */
+  gap: 5px;  /* Adjust the gap between items as needed */
+
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #3498db;  /* Blue color, you can change it as needed */
+
+  /* Additional styles for content inside the card */
+  color: #fff;  /* Text color, adjust as needed */
+  margin: auto;
+  width: 25%;
+}
