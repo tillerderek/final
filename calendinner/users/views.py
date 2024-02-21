@@ -3,17 +3,18 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib import messages
 from . import forms
-from .forms import LoginForm
+from .forms import LoginForm, SignupForm
 
 # signup page
 def user_signup(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = SignupForm(request.POST)
         if form.is_valid():
+            form.full_clean()
             form.save()
             return redirect('login')
     else:
-        form = UserCreationForm()
+        form = SignupForm()
     return render(request, 'users/signup.html', {'form': form})
   
   # login page
