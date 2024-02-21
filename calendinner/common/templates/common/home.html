@@ -1,8 +1,13 @@
 {% extends "common/base.html" %}
 
 {% block content %}
-  <h1>Recipes TEST2:</h1>
-  <h2>Recipe Grid</h2>
+  <h1>Your Weekly Menu Planner</h1>
+  {% if user.is_authenticated %}
+  <p>Welcome, {{ user.username }}!</p>
+  {% else %}
+  <p>Calendinner populates your calendar with simple dinner recipes, personalized to your diet and tastes.</p>
+  {% endif %}
+  <h2>Browse our recipes</h2>
   <div id="grid">
     {% for recipe in recipes %}
       {% include 'recipes/recipe-card.html' with recipe=recipe %}

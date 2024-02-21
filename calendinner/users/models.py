@@ -11,17 +11,6 @@ class UserRole(models.Model):
         return self.role
 
 
-class User(models.Model):
-    email = models.CharField(max_length=255)
-    fname = models.CharField(max_length=255)
-    lname = models.CharField(max_length=255)
-    password = models.CharField(max_length=255)
-    role_id_usr = models.ForeignKey(UserRole, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f"{self.fname} {self.lname}"
-
-
 class UserTagPreference(models.Model):
     tag_id_utp = models.ForeignKey(Tag, on_delete=models.CASCADE)
     user_id_utp = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -30,7 +19,3 @@ class UserTagPreference(models.Model):
 class UserFavorite(models.Model):
     user_id_usf = models.ForeignKey(User, on_delete=models.CASCADE)
     recipe_id_usf = models.ForeignKey(Recipe, on_delete=models.CASCADE)
-
-
-def __str__(self):
-    return self.title
