@@ -1,9 +1,11 @@
 <header>
-  <h1>Calendinner</h1>
+  <a href="{% url 'home' %}"><h1>Calendinner</h1></a>
+  {% load static %}
+  <img src="{% static 'assets/calendinner_logo.png' %}" height="100px"></img>
   <nav>
     <ul>
       {% if request.user.is_authenticated %}
-      <li>{{ request.user.username }}</li>
+      <li><a href="{% url 'dashboard' %}">{{ request.user.username }}</a></li>
       <li><a href="{% url 'logout' %}">Logout</a></li>
       {% else %}
       <li><a href="{% url 'login' %}">Login</a></li>

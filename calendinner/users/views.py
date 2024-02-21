@@ -35,3 +35,16 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return redirect('home')
+  
+  
+def dashboard(request):
+    return render(request, 'users/dashboard.html')
+  
+def favorites(request):
+    return render(request, 'users/favorites.html')
+  
+def preferences(request):
+    return render(request, 'users/preferences.html')
+  
+def uploaded(request):
+    return render(request, 'users/uploaded.html')

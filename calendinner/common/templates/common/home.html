@@ -10,7 +10,9 @@
   <h2>Browse our recipes</h2>
   <div id="grid">
     {% for recipe in recipes %}
+    <a href="{% url 'recipe_detail' recipe.id %}">
       {% include 'recipes/recipe-card.html' with recipe=recipe %}
+    </a>
     {% endfor %}
   </div> 
 {% endblock %}
