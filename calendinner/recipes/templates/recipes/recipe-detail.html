@@ -1,13 +1,24 @@
 {% extends "common/base.html" %}
 
-{% block content%}
+{% block content %}
 
 <div id="detail">
   {% load static %}
+
   <h3>{{ recipe.title }}</h3>
   <p>{{ recipe.description }}</p>
-  
-  {% if recipe.image_filename == 'REMOVE THIS' %}
+  <p>Prep Time: {{ recipe.prep_time }}</p>
+  <p>Cook Time: {{ recipe.cook_time }}</p>
+  <p>Serving Size: {{ recipe.serving_size }}</p>
+  <p>User: {{ recipe.user }}</p>
+  <p>Tags: {% for tag in recipe.tags.all %}{{ tag.tag_name }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+  <p>Ingredients: {% for ingredient_quantity in recipe.ingredients.all %}{{ ingredient_quantity.quantity }} {{ ingredient_quantity.unit_measure }} of {{ ingredient_quantity.ingredient.ingredient_name }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+
+  {% for recipestep in recipe.recipestep_set.all %}
+    <p>{{ recipestep.step }}</p>
+  {% endfor %}
+
+  {% if recipe.image_filename != 'REMOVE THIS' %}
     <a href="#">
       <img src="{% static recipe.image_filename %}.jpg">
     </a>
@@ -16,7 +27,7 @@
       <img src="https://placehold.co/500x500" height="100" width="100">
     </a>
   {% endif %}
-</div>
 
+</div>
 
 {% endblock %}

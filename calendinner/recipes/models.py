@@ -18,7 +18,7 @@ class Recipe(models.Model):
         return self.title
 
 class RecipeStep(models.Model):
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, default=1)
+    recipe = models.ForeignKey(Recipe, on_delete=models.SET_NULL, null=True)
     step = models.CharField(max_length=2000)
     
     def __str__(self):

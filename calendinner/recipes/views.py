@@ -3,8 +3,9 @@ from django.contrib.auth.decorators import login_required
 from .forms import RecipeForm, RecipeStepForm, IngredientQuantityForm
 from .models import Recipe, RecipeStep, IngredientQuantity, Ingredient
 
-def recipe_success(request):
-    return render(request, 'recipes/recipe-success.html')
+def recipe_detail(request, recipe_id):
+    recipe = Recipe.objects.get(id=recipe_id)
+    return render(request, 'recipes/recipe-detail.html', {'recipe': recipe})
 
 @login_required
 def submit_recipe(request):
@@ -21,12 +22,21 @@ def submit_recipe(request):
             step_form.save()
             
                 # Get the ingredient instance from the form data
-            ingredient_instance = ingredient_form.cleaned_data['ingredient']
+            # ingredient_instance = ingredient_form.cleaned_data['ingredient']
+            # ingredient = ingredient_form.save(commit=False)
+            # ingredient = ingredient_instance
+            # ingredient.save()
+            
+            # Save the ingredient
             ingredient = ingredient_form.save(commit=False)
-            ingredient = ingredient_instance
+            ingredient.recipe = recipe
             ingredient.save()
+            
+                        # Save tags associated with the recipe
+            tags = request.POST.getlist('tags')
+            recipe.tags.set(tags)
 
-            return (redirect('recipe_success'))
+            return (redirect('recipe_detail', recipe_id=recipe.id))
 
     else:
         recipe_form = RecipeForm()
