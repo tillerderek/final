@@ -12,7 +12,11 @@
   <p>Serving Size: {{ recipe.serving_size }}</p>
   <p>User: {{ recipe.user }}</p>
   <p>Tags: {% for tag in recipe.tags.all %}{{ tag.tag_name }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
-  <p>Ingredients: {% for ingredient_quantity in recipe.ingredients.all %}{{ ingredient_quantity.quantity }} {{ ingredient_quantity.unit_measure }} of {{ ingredient_quantity.ingredient.ingredient_name }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+  <p>Ingredients: 
+    {% for ingredient in recipe.ingredients.all %}
+      {{ ingredient }}{% if not forloop.last %}, {% endif %}
+    {% endfor %}
+  </p>
 
   {% for recipestep in recipe.recipestep_set.all %}
     <p>{{ recipestep.step }}</p>
