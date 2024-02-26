@@ -1,0 +1,21 @@
+{% extends "common/base.html" %}
+
+{% block content %}
+<h1>Submit a Recipe</h1>
+
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+
+  <h2>Recipe Details</h2>
+  {{ recipe_form.as_p }}
+
+  <h2>Recipe Step</h2>
+  {{ step_form.as_p }}
+
+  <h2>Ingredient</h2>
+  {{ ingredient_form.as_p }}
+
+  <button type="submit">Submit Recipe</button>
+</form>
+
+{% endblock %}
