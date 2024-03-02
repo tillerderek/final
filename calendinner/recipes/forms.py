@@ -1,4 +1,5 @@
 from django import forms
+from django.forms import modelformset_factory
 from .models import Recipe, RecipeStep, Ingredient, UnitMeasure, IngredientQuantity
 
 class RecipeForm(forms.ModelForm):
@@ -7,8 +8,6 @@ class RecipeForm(forms.ModelForm):
     prep_time = forms.IntegerField(label="Prep Time (minutes)")
     cook_time = forms.IntegerField(label="Cook Time (minutes)")
     serving_size = forms.IntegerField(label="Serving Size")
-    # Assuming image upload functionality is implemented elsewhere
-    # image_filename = forms.ImageField(label="Recipe Image")
 
     def clean_prep_time(self):
         data = self.cleaned_data['prep_time']
@@ -38,6 +37,8 @@ class RecipeStepForm(forms.ModelForm):
     class Meta:
       model = RecipeStep
       fields = ['step']
+      
+RecipeStepFormSet = modelformset_factory(RecipeStep, form=RecipeStepForm, extra=1, can_delete=True, max_num=40, validate_max=True)
 
 class IngredientQuantityForm(forms.ModelForm):
     ingredient = forms.ModelChoiceField(queryset=Ingredient.objects.all(), to_field_name='ingredient_name', label="Ingredient")
