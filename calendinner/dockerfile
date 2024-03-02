@@ -6,6 +6,7 @@ COPY . /app
 
 # Install dependencies
 RUN pip install Django mysqlclient
+RUN pip install django-htmx
 
 # Run migrations and start the server
 CMD ["bash", "-c", "python manage.py migrate && python manage.py runserver 0.0.0.0:8001"]

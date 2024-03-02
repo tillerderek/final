@@ -1,9 +1,13 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib import messages
 from . import forms
 from .forms import LoginForm, SignupForm
+from .models import Recipe, UserFavorite
+from menus.models import Menu, MenuRecipe
+from django.utils import timezone
 
 # signup page
 def user_signup(request):
@@ -41,11 +45,35 @@ def user_logout(request):
 def dashboard(request):
     return render(request, 'users/dashboard.html')
   
+@login_required
 def favorites(request):
-    return render(request, 'users/favorites.html')
+    if request.method == 'POST':
+        recipe_id = request.POST.get('recipe_id')
+
+        user = request.user  
+
+        if not UserFavorite.objects.filter(user=user.id, recipe=recipe_id).exists():
+
+            recipe = Recipe.objects.get(pk=recipe_id)
+            favorite = UserFavorite(user=user, recipe=recipe)
+            favorite.save()
+
+        return redirect('favorites')
+
+    favorites = UserFavorite.objects.filter(user=request.user.id)
+    print(favorites)
+
+    context = {
+        'favorites': favorites,
+        'title': 'Favorites',
+    }
+
+    return render(request, 'users/favorites.html', context)
+
   
 def preferences(request):
     return render(request, 'users/preferences.html')
   
 def uploaded(request):
-    return render(request, 'users/uploaded.html')
+    userUploaded = Recipe.objects.filter(user=request.user)
+    return render(request, 'users/uploaded.html', {'userUploaded': userUploaded})

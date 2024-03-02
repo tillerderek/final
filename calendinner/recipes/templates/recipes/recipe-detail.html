@@ -32,6 +32,18 @@
     </a>
   {% endif %}
 
+  <form method="post" action="{% url 'favorites' %}">
+    {% csrf_token %}
+    <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
+    <button type="submit">Add to Favorites</button>
+  </form>
+
+  <form method="post" action="{% url 'upcoming-menu' %}">
+    {% csrf_token %}
+    <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
+    <button type="submit">Add to Upcoming Menu</button>
+  </form>
+
 </div>
 
 {% endblock %}

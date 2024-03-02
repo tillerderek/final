@@ -1,1 +1,29 @@
-<h1>upcoming menu</h1>
+{% extends "common/base.html" %}
+
+{% block title %}Upcoming Menu{% endblock %}
+
+{% block content %}
+    <h1>Upcoming Menu</h1>
+    
+    {% if upcoming_recipe %}
+        <ul id="upcoming_recipes">
+            {% for recipe in upcoming_recipe %}
+                <li>
+                    <form 
+                        action="{% url 'delete-upcoming-recipe' recipe_id=recipe.recipe.pk %}" 
+                        method="post" 
+                        hx-delete
+                        hx-target="#upcoming_recipes"
+                        hx-confirm="Are you sure you want to delete this recipe from your Upcoming Menu?"
+                    >
+                        {% csrf_token %}
+                        <button type="submit" class="btn-delete" data-recipe-id="{{ recipe.recipe.pk }}">X</button>
+                    </form>
+                    <a href="{% url 'recipe_detail' recipe_id=recipe.recipe.pk %}">{{ recipe.recipe.title }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No upcoming recipe.</p>
+    {% endif %}
+{% endblock %}

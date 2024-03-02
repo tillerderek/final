@@ -12,10 +12,10 @@ class UserRole(models.Model):
 
 
 class UserTagPreference(models.Model):
-    tag_id_utp = models.ForeignKey(Tag, on_delete=models.CASCADE)
-    user_id_utp = models.ForeignKey(User, on_delete=models.CASCADE)
+    tag= models.ForeignKey(Tag, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
 class UserFavorite(models.Model):
-    user_id_usf = models.ForeignKey(User, on_delete=models.CASCADE)
-    recipe_id_usf = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)

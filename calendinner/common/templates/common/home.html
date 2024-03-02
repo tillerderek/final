@@ -1,18 +1,21 @@
-{% extends "common/base.html" %}
+{% extends "common/base.html" %}{% block content %} 
 
-{% block content %}
-  <h1>Your Weekly Menu Planner</h1>
-  {% if user.is_authenticated %}
-  <p>Welcome, {{ user.username }}!</p>
-  {% else %}
-  <p>Calendinner populates your calendar with simple dinner recipes, personalized to your diet and tastes.</p>
-  {% endif %}
-  <h2>Browse our recipes</h2>
-  <div id="grid">
-    {% for recipe in recipes %}
-    <a href="{% url 'recipe_detail' recipe.id %}">
-      {% include 'recipes/recipe-card.html' with recipe=recipe %}
-    </a>
-    {% endfor %}
-  </div> 
+{% include "common/header.html" %}
+<h1>Your Weekly Menu Planner</h1>
+{% if user.is_authenticated %}
+<p>Welcome, {{ user.username }}!</p>
+{% else %}
+<p>
+  Calendinner populates your calendar with simple dinner recipes, personalized
+  to your diet and tastes.
+</p>
+{% endif %}
+<h2>Browse our recipes</h2>
+<div id="grid">
+  {% for recipe in recipes %}
+  <a href="{% url 'recipe_detail' recipe.id %}">
+    {% include 'recipes/recipe-card.html' with recipe=recipe %}
+  </a>
+  {% endfor %}
+</div>
 {% endblock %}

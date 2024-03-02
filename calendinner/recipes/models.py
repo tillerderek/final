@@ -9,7 +9,7 @@ class Recipe(models.Model):
     prep_time = models.IntegerField()
     cook_time = models.IntegerField()
     serving_size = models.IntegerField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.SET_DEFAULT, default=1)
     image_filename = models.CharField(max_length=255)
     tags = models.ManyToManyField("Tag", through="RecipeTag")
     ingredients = models.ManyToManyField("Ingredient", through="IngredientQuantity")
@@ -18,7 +18,7 @@ class Recipe(models.Model):
         return self.title
 
 class RecipeStep(models.Model):
-    recipe = models.ForeignKey(Recipe, on_delete=models.SET_NULL, null=True)
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, default=1)
     step = models.CharField(max_length=2000)
     
     def __str__(self):
