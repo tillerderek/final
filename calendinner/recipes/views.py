@@ -7,7 +7,11 @@ from django.forms import modelformset_factory
 @login_required
 def recipe_detail(request, recipe_id):
     recipe = Recipe.objects.get(id=recipe_id)
-    context = {'recipe': recipe}
+    ingredient = Ingredient.objects.get(id=recipe_id)
+    step = RecipeStep.objects.get(id=recipe_id)
+    context = {'recipe': recipe,
+               'ingredient': ingredient,
+               'step': step}
     return render(request, 'recipes/recipe-detail.html', context)
 
 @login_required

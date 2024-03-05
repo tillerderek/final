@@ -1,7 +1,10 @@
 from django.shortcuts import render
 import datetime
-from .models import Recipe  # Assuming your models module is in the same directory as your views
+from .models import Recipe
 from menus.models import Menu
+
+
+
 
 def home(request):
     user = request.user if request.user.is_authenticated else None
@@ -14,3 +17,9 @@ def home(request):
         'title': 'Dinner\'s Ready',
     }
     return render(request, 'common/home.html', context)
+  
+  
+def autocomplete(request):
+    term = request.GET.get('term', '')
+    results = Recipe.objects.filter(title__icontains=term)
+    return render(request, 'common/autocomplete_results.html', {'results': results})

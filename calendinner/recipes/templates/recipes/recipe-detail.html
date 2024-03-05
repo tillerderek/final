@@ -13,8 +13,8 @@
   <p>User: {{ recipe.user }}</p>
   <p>Tags: {% for tag in recipe.tags.all %}{{ tag.tag_name }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
   <p>Ingredients: 
-    {% for ingredient in recipe.ingredients.all %}
-      {{ ingredient }}{% if not forloop.last %}, {% endif %}
+    {% for i in ingredient %}
+      <p> {{ i.ingredient_name }} </p>
     {% endfor %}
   </p>
 
