@@ -13,7 +13,6 @@ class Recipe(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_DEFAULT, default=1)
     image_filename = models.CharField(max_length=255)
     tags = models.ManyToManyField("Tag", through="RecipeTag")
-    ingredients = models.ManyToManyField("Ingredient", through="IngredientQuantity")
 
     def __str__(self):
         return self.title

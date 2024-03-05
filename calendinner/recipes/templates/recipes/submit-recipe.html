@@ -1,29 +1,55 @@
-{% extends "common/base.html" %}
-
-{% block content %}
+{% extends "common/base.html" %} {% block content %}
 <h1>Submit a Recipe</h1>
 
-<form method="post" enctype="multipart/form-data" hx-post="{% url 'submit_recipe' %}" hx-target="#recipe-form">
+<form
+  method="post"
+  enctype="multipart/form-data"
+  hx-post="{% url 'submit_recipe' %}"
+>
   {% csrf_token %}
 
   <h2>Recipe Details</h2>
   {{ recipe_form.as_p }}
 
   <h2>Ingredient</h2>
-  {{ ingredient_form.as_p }}
+
+  <div id="recipe-ingredient">
+    {{ ingredient_form.as_p }}
+    {{ ingredient_formset.management_form }}
+    {% for form in ingredient_formset %}
+      {{ form.as_p }}
+    {% endfor %}
+    {{ ingredient_quantity_form.as_p }}
+  </div>
+
+  <button
+    type="button"
+    hx-get="{% url 'empty-ingredient-form' %}"
+    hx-target="#recipe-ingredient"
+    hx-swap="beforeend"
+  >
+    Add Ingredient
+  </button>
 
   <h2>Recipe Step</h2>
   <ul>
-  {{ step_formset.management_form }}
-  {% for form in step_formset %}
-      <li id="recipe-step">{{ form.as_p }}</li>
-  {% endfor %}
+    {{ step_formset.management_form }}
+    {% for form in step_formset %}
+      <li>{{ form.as_ul }}</li>
+      <div id="recipe-step"></div>
+    {% endfor %}  
+    <button
+    type="button"
+    hx-get="{% url 'empty-step-form' %}"
+    hx-target="#recipe-step"
+    hx-swap="beforeend"
+    hx-append
+  >
+    Add Step
+    </button>
   </ul>
-  <button type="submit" hx-target="#recipe-form">Submit Recipe</button>
-</form>
+  <button type="submit">Submit Recipe</button>
 
-<button type="button" hx-get="{% url 'empty-step-form' %}" hx-target="#recipe-step" hx-append>
-Add Step
-</button>
+</form>
 
 {% endblock %}

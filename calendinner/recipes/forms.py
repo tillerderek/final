@@ -38,13 +38,23 @@ class RecipeStepForm(forms.ModelForm):
       model = RecipeStep
       fields = ['step']
       
-RecipeStepFormSet = modelformset_factory(RecipeStep, form=RecipeStepForm, extra=1, can_delete=True, max_num=40, validate_max=True)
+recipe_step_formset = modelformset_factory(RecipeStep, form=RecipeStepForm, extra=1, can_delete=True, max_num=40, validate_max=True)
 
 class IngredientQuantityForm(forms.ModelForm):
-    ingredient = forms.ModelChoiceField(queryset=Ingredient.objects.all(), to_field_name='ingredient_name', label="Ingredient")
     quantity = forms.IntegerField(label="Quantity")
     unit_measure = forms.ModelChoiceField(queryset=UnitMeasure.objects.all(), label="Unit of Measure")
+
+    class Meta:
+        model = IngredientQuantity
+        fields = ['quantity', 'unit_measure']
+
+ingredient_quantity_formset = modelformset_factory(IngredientQuantity, form=IngredientQuantityForm, extra=1, can_delete=True, max_num=40, validate_max=True)
+
+class IngredientForm(forms.ModelForm):
+    ingredient_name = forms.CharField(max_length=255, label="Ingredient Name")
     
     class Meta:
-      model = IngredientQuantity
-      fields = ['ingredient', 'quantity', 'unit_measure']
+      model = Ingredient
+      fields = ['ingredient_name']
+      
+ingredient_formset = modelformset_factory(Ingredient, form=IngredientForm, extra=1, can_delete=True, max_num=40, validate_max=True)

@@ -6,5 +6,6 @@ urlpatterns = [
     # path("recipe-detail/<int:recipe_id>/", views.recipe_detail, name="recipe_detail"),
     path('submit-recipe/', views.submit_recipe, name='submit_recipe'),
     path('recipe-detail/<int:recipe_id>/', views.recipe_detail, name='recipe_detail'),
-    path('empty-step-form/', views.empty_step_form, name='empty-step-form')
+    path('empty-step-form/', views.empty_step_form, name='empty-step-form'),
+    path('empty-ingredient-form/', views.empty_ingredient_form, name='empty-ingredient-form'),
 ]
