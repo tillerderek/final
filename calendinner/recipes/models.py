@@ -13,16 +13,18 @@ class Recipe(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_DEFAULT, default=1)
     image_filename = models.CharField(max_length=255)
     tags = models.ManyToManyField("Tag", through="RecipeTag")
+    ingredients = models.ManyToManyField("Ingredient", through="IngredientQuantity")
+    steps = models.ManyToManyField("RecipeStep")
 
     def __str__(self):
         return self.title
 
 class RecipeStep(models.Model):
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, default=1)
-    step = models.CharField(max_length=2000)
+    recipe_id = models.ForeignKey(Recipe, on_delete=models.CASCADE, default=1)
+    recipe_step = models.CharField(max_length=2000)
     
     def __str__(self):
-        return self.step
+        return self.recipe_step
 
 class Ingredient(models.Model):
     ingredient_name = models.CharField(max_length=255, unique=True)

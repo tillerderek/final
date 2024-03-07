@@ -5,22 +5,28 @@
 <div id="detail">
   {% load static %}
 
-  <h3>{{ recipe.title }}</h3>
-  <p>{{ recipe.description }}</p>
-  <p>Prep Time: {{ recipe.prep_time }}</p>
-  <p>Cook Time: {{ recipe.cook_time }}</p>
-  <p>Serving Size: {{ recipe.serving_size }}</p>
-  <p>User: {{ recipe.user }}</p>
-  <p>Tags: {% for tag in recipe.tags.all %}{{ tag.tag_name }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
-  <p>Ingredients: 
-    {% for i in ingredient %}
-      <p> {{ i.ingredient_name }} </p>
+  <h1>{{ recipe.title }}</h1>
+  <p>Description: {{ recipe.description }}</p>
+  <p>Prep Time: {{ recipe.prep_time }} minutes</p>
+  <p>Cook Time: {{ recipe.cook_time }} minutes</p>
+  <p>Serving Size: {{ recipe.serving_size }} servings</p>
+  <p>Uploaded By: {{ recipe.user }}</p>
+  <p>Tags: 
+    {% for tag in recipe.tags.all %}
+       <p>{{ tag.tag_name }}</p>
     {% endfor %}
   </p>
+  <p>Ingredients: 
+      {% for ingredient in ingredients %}
+        <p> {{ ingredient.ingredient.ingredient_name }} ({{ ingredient.quantity }} {{ ingredient.unit_measure.name }}) </p>
+      {% endfor %}
+  </p>
 
-  {% for recipestep in recipe.recipestep_set.all %}
-    <p>{{ recipestep.step }}</p>
-  {% endfor %}
+  <p>Steps:
+      {% for step in steps %}
+        <p>{{ step.step }}</p>
+      {% endfor %}
+  </p>
 
   {% if recipe.image_filename != 'REMOVE THIS' %}
     <a href="#">

@@ -1,0 +1,8 @@
+<hr>
+<form method="post" action="{% url 'submit_recipe' %}" hx-post="{% url 'submit_recipe' %}" hx-target="#recipe-form">
+  {% csrf_token %}
+  {{ formset.management_form }}
+  {% for form in formset.forms %}
+    {{ form.as_p }}
+  {% endfor %}
+</form>

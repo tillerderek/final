@@ -12,32 +12,34 @@
   {{ recipe_form.as_p }}
 
   <h2>Ingredient</h2>
+  
+      {{ ingredient_form.management_form }}
+      {{ ingredient_form.as_p }}
 
-  <div id="recipe-ingredient">
-    {{ ingredient_form.as_p }}
-    {{ ingredient_formset.management_form }}
-    {% for form in ingredient_formset %}
-      {{ form.as_p }}
-    {% endfor %}
-    {{ ingredient_quantity_form.as_p }}     
-  </div>
+      {{ ingredient_quantity_form.management_form }}
+      {{ ingredient_quantity_form.as_p}}
 
-  <button
+  <div id="recipe-ingredient"></div>
+
+    <button
     type="button"
     hx-get="{% url 'empty-ingredient-form' %}"
     hx-target="#recipe-ingredient"
     hx-swap="beforeend"
-  >
+    hx-append
+    >
     Add Ingredient
-  </button>
+    </button>
+
+
+
 
   <h2>Recipe Step</h2>
-  <ul>
-    {{ step_formset.management_form }}
-    {% for form in step_formset %}
-      <li>{{ form.as_ul }}</li>
-      <div id="recipe-step"></div>
-    {% endfor %}  
+  {{ step_form.management_form }}
+  {{ step_form.as_p }}
+
+  <div id="recipe-step"></div>
+
     <button
     type="button"
     hx-get="{% url 'empty-step-form' %}"
@@ -47,7 +49,6 @@
   >
     Add Step
     </button>
-  </ul>
   <button type="submit">Submit Recipe</button>
 
 </form>

@@ -1,0 +1,26 @@
+{% extends "common/base.html" %} {% block content %}
+
+<h1>Create a Recipe</h1>
+<div id="recipe-form">
+    <form method="post" action="{% url 'submit_recipe' %}" hx-post="{% url 'submit_recipe' %}" hx-target="#recipe-form">
+      {% csrf_token %}
+
+      {{ recipe_form.as_p }}
+
+      <button hx-get="{% url 'add-ingredient' %}" hx-target="#ingredient-formset-container" hx-swap="beforeend">Add Ingredient</button>
+      <button hx-get="{% url 'add-step' %}" hx-target="#step-formset-container" hx-swap="beforeend">Add a Step</button>
+    
+      <div id="ingredient-formset-container">
+        {% include 'recipes/add-ingredient.html' with formset=ingredient_formset %}
+      </div>
+
+      <div id="step-formset-container">
+        {% include 'recipes/add-step.html' with formset=recipe_step_formset %}
+      </div>
+
+        <button type="submit" hx-post="{% url 'submit_recipe' %}" hx-target="#recipe-form">Submit</button>
+    </form>
+
+
+</div>
+{% endblock %} ```

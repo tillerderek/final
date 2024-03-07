@@ -2,6 +2,7 @@ from django.shortcuts import render
 import datetime
 from .models import Recipe
 from menus.models import Menu
+from recipes.models import Ingredient
 
 
 
@@ -20,6 +21,6 @@ def home(request):
   
   
 def autocomplete(request):
-    term = request.GET.get('term', '')
-    results = Recipe.objects.filter(title__icontains=term)
+    term = request.POST.get('term', '')
+    results = Ingredient.objects.filter(ingredient_name__icontains=term)
     return render(request, 'common/autocomplete_results.html', {'results': results})
