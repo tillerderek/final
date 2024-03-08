@@ -1,26 +1,118 @@
-{% extends "common/base.html" %} {% block content %}
+{% extends "common/base.html" %} 
+{% block content %}
 
-<h1>Create a Recipe</h1>
-<div id="recipe-form">
-    <form method="post" action="{% url 'submit_recipe' %}" hx-post="{% url 'submit_recipe' %}" hx-target="#recipe-form">
-      {% csrf_token %}
+<h1>Submit a Recipe</h1>
 
-      {{ recipe_form.as_p }}
+<form
+  method="post"
+  enctype="multipart/form-data"
+  hx-post="{% url 'submit_recipe' %}"
+>
+  {% csrf_token %}
+  <h2>Recipe Details</h2>
+  <label for="title">Title</label>
+  <input type="text" name="title" />
+  <label for="description">Description</label>
+  <input type="text" name="description" />
+  <label for="prep_time">Prep Time</label>
+  <input type="number" name="prep_time" />
+  <label for="cook_time">Cook Time</label>
+  <input type="number" name="cook_time" />
+  <label for="servings">Servings</label>
+  <input type="number" name="servings" />
+  <label for="image_filename">Image Filename</label>
+  <input type="text" name="image_filename" />
+  <div id="tags">
+    <label for="tags">Tags</label>
+        {% for tag in tags %}
+    <label for="tags">{{ tag.tag_name }}</label>
+    <input type="checkbox" name="tags" value="{{ tag.id }}" />
+    {% endfor %}
+  </div>
+  <div id="recipe_ingredient">
+    <label for="ingredient">Ingredient</label>
+    <input type="text" name="ingredient" />
+    <label for="quantity">Quantity</label>
+    <input type="number" name="quantity" />
+    <label for="unit_measure">Unit of Measurement</label>
+    <select name="unit_measure">
+      {% for unit in unit_measure %}
+      <option value="{{ unit.id }}">{{ unit.name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div id="recipe_step">
+    <label for="step">Step</label>
+    <input type="text" name="step" />
+  </div>
 
-      <button hx-get="{% url 'add-ingredient' %}" hx-target="#ingredient-formset-container" hx-swap="beforeend">Add Ingredient</button>
-      <button hx-get="{% url 'add-step' %}" hx-target="#step-formset-container" hx-swap="beforeend">Add a Step</button>
-    
+  <button
+    type="button"
+    hx-get="{% url 'add-ingredient' %}"
+    hx-target="#recipe_ingredient"
+    hx-swap="beforeend"
+  >
+    Add Ingredient
+  </button>
+  <button
+    type="button"
+    hx-get="{% url 'add-step' %}"
+    hx-target="#recipe_step"
+    hx-swap="beforeend"
+  >
+    Add a Step
+  </button>
+
+  <button type="submit">Submit Recipe</button>
+
+{% endblock %} 
+
+
+{% comment %} {% extends "common/base.html" %} {% block content
+  %}
+
+  <h1>Create a Recipe</h1>
+  <div id="recipe-form">
+    <form
+      method="post"
+      action="{% url 'submit_recipe' %}"
+      hx-post="{% url 'submit_recipe' %}"
+      hx-target="#recipe-form"
+    >
+      {% csrf_token %} {{ recipe_form.as_p }}
+
+      <button
+        hx-get="{% url 'add-ingredient' %}"
+        hx-target="#ingredient-formset-container"
+        hx-swap="beforeend"
+      >
+        Add Ingredient
+      </button>
+      <button
+        hx-get="{% url 'add-step' %}"
+        hx-target="#step-formset-container"
+        hx-swap="beforeend"
+      >
+        Add a Step
+      </button>
+
       <div id="ingredient-formset-container">
-        {% include 'recipes/add-ingredient.html' with formset=ingredient_formset %}
+        {% include 'recipes/add-ingredient.html' with formset=ingredient_formset
+        %}
       </div>
 
       <div id="step-formset-container">
         {% include 'recipes/add-step.html' with formset=recipe_step_formset %}
       </div>
 
-        <button type="submit" hx-post="{% url 'submit_recipe' %}" hx-target="#recipe-form">Submit</button>
+      <button
+        type="submit"
+        hx-post="{% url 'submit_recipe' %}"
+        hx-target="#recipe-form"
+      >
+        Submit
+      </button>
     </form>
-
-
-</div>
-{% endblock %} ```
+  </div>
+  {% endblock %} ``` {% endcomment %}
+</form>

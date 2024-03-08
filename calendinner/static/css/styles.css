@@ -32,3 +32,10 @@ header {
   /* Additional styles for content inside the card */
   color: #fff;  /* Text color, adjust as needed */
 }
+
+form {
+  display: grid;
+  gap: .5rem;
+  grid-template-rows: 1fr 1fr;
+  width: min-content;
+}
