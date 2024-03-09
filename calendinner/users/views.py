@@ -61,7 +61,6 @@ def favorites(request):
         return redirect('favorites')
 
     favorites = UserFavorite.objects.filter(user=request.user.id)
-    print(favorites)
 
     context = {
         'favorites': favorites,

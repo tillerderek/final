@@ -2,6 +2,8 @@
 
 {% block content %}
 {% for upload in userUploaded %}
-  <p>{{ upload.title }}</p>
+  <li><a href="{% url 'recipe_detail' recipe_id=upload.recipe.pk %}">{{ upload.title }}</a></li>
   {% endfor %}
 {% endblock %}
+
+
