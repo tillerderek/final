@@ -5,7 +5,6 @@
 
 <form
   method="post"
-  enctype="multipart/form-data"
   hx-post="{% url 'submit_recipe' %}"
 >
   {% csrf_token %}
@@ -31,11 +30,11 @@
   </div>
   <div id="recipe_ingredient">
     <label for="ingredient">Ingredient</label>
-    <input type="text" name="ingredient" />
+    <input type="text" name="ingredient[]" />
     <label for="quantity">Quantity</label>
-    <input type="number" name="quantity" />
+    <input type="number" name="quantity[]" />
     <label for="unit_measure">Unit of Measurement</label>
-    <select name="unit_measure">
+    <select name="unit_measure[]">
       {% for unit in unit_measure %}
       <option value="{{ unit.id }}">{{ unit.name }}</option>
       {% endfor %}
@@ -43,7 +42,7 @@
   </div>
   <div id="recipe_step">
     <label for="step">Step</label>
-    <input type="text" name="step" />
+    <input type="text" name="step[]" />
   </div>
 
   <button
