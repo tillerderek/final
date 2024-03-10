@@ -7,10 +7,5 @@ urlpatterns = [
     path("upcoming-menu/", views.upcoming_menu, name="upcoming-menu"),
     path("process-draft-menus", views.process_draft_menus, name="process-draft-menus"),
     path("process-final-menus", views.process_final_menus, name="process-final-menus"),
+    path("delete-upcoming-recipe/<int:recipe_id>/", views.delete_upcoming_recipe, name="delete-upcoming-recipe"),
 ]
-
-htmx_urlpatterns = [
-    path("delete-upcoming-recipe/<int:recipe_id>", views.delete_upcoming_recipe, name="delete-upcoming-recipe"),
-]
-
-urlpatterns += htmx_urlpatterns

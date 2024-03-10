@@ -66,6 +66,7 @@ def delete_upcoming_recipe(request, recipe_id):
     recipe.delete()
     
     upcoming_recipe = MenuRecipe.objects.all(pk=user)
+    return HttpResponse('it works')
     return render(request, 'menus/upcoming-menu.html', {'upcoming_recipe': upcoming_recipe})
   
 def process_draft_menus(request):

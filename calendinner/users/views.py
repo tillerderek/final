@@ -75,4 +75,5 @@ def preferences(request):
   
 def uploaded(request):
     userUploaded = Recipe.objects.filter(user=request.user)
+    
     return render(request, 'users/uploaded.html', {'userUploaded': userUploaded})
