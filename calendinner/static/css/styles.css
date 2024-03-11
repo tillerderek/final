@@ -6,9 +6,19 @@
 
 header {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   background-color: rgb(166, 237, 213);
   padding: .5rem;
+  align-content: center;
+}
+
+header img {
+  max-width: 100px;
+}
+
+#search {
+  display: inline-block;
+  align-self: center;
 }
 
 #grid {
@@ -22,22 +32,28 @@ header {
 }
 
 #card {
-  display: grid;  /* or use "grid" for grid layout */
+  display: grid; 
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr 1fr; /* or "grid-template-columns" for grid layout */
-  gap: 5px;  /* Adjust the gap between items as needed */
+  grid-template-rows: 1fr 1fr; 
+  gap: 5px;  
   place-items: center;
   padding: 10px;
   border-radius: 10px;
-  background-color: #3498db;  /* Blue color, you can change it as needed */
+  background-color: #3498db;  
 
-  /* Additional styles for content inside the card */
-  color: #fff;  /* Text color, adjust as needed */
+
+  color: #fff;  
 }
 
 form {
   display: grid;
   gap: .5rem;
   grid-template-rows: 1fr 1fr;
-  width: min-content;
+}
+
+#dashboard_content {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+  justify-items: center;
 }

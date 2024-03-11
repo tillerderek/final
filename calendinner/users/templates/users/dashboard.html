@@ -1,12 +1,15 @@
 <ul>
-  <li><a href="{% url 'upcoming-menu' %}">Upcoming Menu</a></li>
-  <li><a href="{% url 'current-menu' %}">Current Menu</a></li>
-  <li><a href="{% url 'previous-menu' %}">Previous Menu</a></li>
-  <li><a href="{% url 'preferences' %}">User/Dietary Preferences</a></li>
-  <li><a href="{% url 'favorites' %}">Favorite Recipes</a></li>
-  <li><a href="{% url 'uploaded' %}">Personal Recipes</a></li>
-  <li><a href="{% url 'create-recipe' %}">Add a Recipe</a></li>
+  <li><a hx-get="{% url 'upcoming-menu' %}" hx-target="#dashboard_content" hx-swap="#dashboard_content">Upcoming Menu</a></li>
+  <li><a hx-get="{% url 'current-menu' %}" hx-target="#dashboard_content" hx-swap="#dashboard_content">Current Menu</a></li>
+  <li><a hx-get="{% url 'previous-menu' %}" hx-target="#dashboard_content" hx-swap="#dashboard_content">Previous Menu</a></li>
+  <li><a hx-get="{% url 'preferences' %}" hx-target="#dashboard_content" hx-swap="#dashboard_content">User/Dietary Preferences</a></li>
+  <li><a hx-get="{% url 'favorites' %}" hx-target="#dashboard_content" hx-swap="#dashboard_content">Favorite Recipes</a></li>
+  <li><a hx-get="{% url 'uploaded' %}" hx-target="#dashboard_content" hx-swap="#dashboard_content">Personal Recipes</a></li>
+  <li><a hx-get="{% url 'create-recipe' %}" hx-target="#dashboard_content" hx-swap="#dashboard_content">Add a Recipe</a></li>
   {% if is_moderator %}
-    <li><a href="{% url 'moderator-content' %}">Moderator Area</a></li>
+    <li><a hx-get="{% url 'moderator-content' %}" hx-target="#dashboard_content" hx-swap="#dashboard_content">Moderator Area</a></li>
   {% endif %}
+  <li><a href="{% url 'home' %}">Home &larr;</a></li>
 </ul>
+<hr>
+<div id="dashboard_content"></div>

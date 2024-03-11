@@ -1,11 +1,19 @@
 <header>
-  <a href="{% url 'home' %}"><h1>Calendinner</h1></a>
+  <h1><a href="{% url 'home' %}">Calendinner</a></h1>
   {% load static %}
-  <img src="{% static 'assets/calendinner_logo.png' %}" height="100px"></img>
+
+    <figure class="image is square">
+      <img src="{% static 'assets/calendinner_logo.png' %}"></img>
+    </figure>
+      <div id="search">
+      <input type="text" name="term" placeholder="Search..." hx-post="{% url 'search' %}" hx-target="#main" hx-swap="#main">
+      <input type="submit" value="Submit">
+      </div>
+
   <nav>
     <ul>
       {% if request.user.is_authenticated %}
-      <li><a href="{% url 'dashboard' %}">{{ request.user.username }}</a></li>
+      <li><a hx-get="{% url 'dashboard' %}" hx-target="#main" hx-swap="#main">{{ request.user.username }}</a></li>
       <li><a href="{% url 'logout' %}">Logout</a></li>
       {% else %}
       <li><a href="{% url 'login' %}">Login</a></li>

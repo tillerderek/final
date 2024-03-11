@@ -3,9 +3,9 @@
   <h3>{{ recipe.title }}</h3>
   <p>{{ recipe.description }}</p>
   
-  {% if recipe.image_filename == 'REMOVE THIS' %}
+  {% if recipe.image %}
     <a href="#">
-      <img src="{% static recipe.image_filename %}.jpg">
+      <img src="{{ recipe.image.url }}">
     </a>
   {% else %}
     <a href="#">
