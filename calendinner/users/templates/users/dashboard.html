@@ -6,4 +6,7 @@
   <li><a href="{% url 'favorites' %}">Favorite Recipes</a></li>
   <li><a href="{% url 'uploaded' %}">Personal Recipes</a></li>
   <li><a href="{% url 'create-recipe' %}">Add a Recipe</a></li>
+  {% if is_moderator %}
+    <li><a href="{% url 'moderator-content' %}">Moderator Area</a></li>
+  {% endif %}
 </ul>

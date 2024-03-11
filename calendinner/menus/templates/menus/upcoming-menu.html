@@ -3,18 +3,20 @@
 {% block title %}Upcoming Menu{% endblock %}
 
 {% block content %}
+<div id="upcoming_recipes">
     <h1>Upcoming Menu</h1>
     
     {% if upcoming_recipe %}
-        <ul id="upcoming_recipes">
+        <ul>
             {% for recipe in upcoming_recipe %}
                 <li>
                     <a href="{% url 'recipe_detail' recipe_id=recipe.recipe.pk %}">{{ recipe.recipe.title }}</a>
-                    <button hx-delete="{% url 'delete-upcoming-recipe' recipe_id=recipe.recipe.pk %}">Delete</button>
+                    <button hx-delete="{% url 'delete-upcoming-recipe' recipe_id=recipe.recipe.pk %}" hx-target="#upcoming_recipes" hx-confirm="Are you sure you want to remove this recipe from your upcoming menu?" hx-swap="#">X</button>
                 </li>
             {% endfor %}
         </ul>
     {% else %}
         <p>No upcoming recipe.</p>
     {% endif %}
+    </div>
 {% endblock %}

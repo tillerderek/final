@@ -5,6 +5,7 @@
 
 <form
   method="post"
+  enctype="multipart/form-data"
   hx-post="{% url 'submit_recipe' %}"
 >
   {% csrf_token %}
@@ -19,8 +20,9 @@
   <input type="number" name="cook_time" />
   <label for="servings">Servings</label>
   <input type="number" name="servings" />
-  <label for="image_filename">Image Filename</label>
-  <input type="text" name="image_filename" />
+  <label for="image">Image</label>
+  <input type="file" name="image" />
+
   <div id="tags">
     <label for="tags">Tags</label>
         {% for tag in tags %}
@@ -28,6 +30,7 @@
     <input type="checkbox" name="tags" value="{{ tag.id }}" />
     {% endfor %}
   </div>
+
   <div id="recipe_ingredient">
     <label for="ingredient">Ingredient</label>
     <input type="text" name="ingredient[]" />
@@ -40,6 +43,17 @@
       {% endfor %}
     </select>
   </div>
+  
+  <button
+    type="button"
+    hx-get="{% url 'add-ingredient' %}"
+    hx-target="#recipe_ingredient"
+    hx-swap="beforeend"
+    class="button is-primary"
+  >
+    Add Ingredient
+  </button>
+
   <div id="recipe_step">
     <label for="step">Step</label>
     <input type="text" name="step[]" />
@@ -47,71 +61,15 @@
 
   <button
     type="button"
-    hx-get="{% url 'add-ingredient' %}"
-    hx-target="#recipe_ingredient"
-    hx-swap="beforeend"
-  >
-    Add Ingredient
-  </button>
-  <button
-    type="button"
     hx-get="{% url 'add-step' %}"
     hx-target="#recipe_step"
     hx-swap="beforeend"
+    class="button is-primary"
   >
     Add a Step
   </button>
 
-  <button type="submit">Submit Recipe</button>
+  <button type="submit" class="button is-primary">Submit Recipe</button>
 
-{% endblock %} 
-
-
-{% comment %} {% extends "common/base.html" %} {% block content
-  %}
-
-  <h1>Create a Recipe</h1>
-  <div id="recipe-form">
-    <form
-      method="post"
-      action="{% url 'submit_recipe' %}"
-      hx-post="{% url 'submit_recipe' %}"
-      hx-target="#recipe-form"
-    >
-      {% csrf_token %} {{ recipe_form.as_p }}
-
-      <button
-        hx-get="{% url 'add-ingredient' %}"
-        hx-target="#ingredient-formset-container"
-        hx-swap="beforeend"
-      >
-        Add Ingredient
-      </button>
-      <button
-        hx-get="{% url 'add-step' %}"
-        hx-target="#step-formset-container"
-        hx-swap="beforeend"
-      >
-        Add a Step
-      </button>
-
-      <div id="ingredient-formset-container">
-        {% include 'recipes/add-ingredient.html' with formset=ingredient_formset
-        %}
-      </div>
-
-      <div id="step-formset-container">
-        {% include 'recipes/add-step.html' with formset=recipe_step_formset %}
-      </div>
-
-      <button
-        type="submit"
-        hx-post="{% url 'submit_recipe' %}"
-        hx-target="#recipe-form"
-      >
-        Submit
-      </button>
-    </form>
-  </div>
-  {% endblock %} ``` {% endcomment %}
 </form>
+{% endblock %} 

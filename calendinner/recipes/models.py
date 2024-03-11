@@ -11,7 +11,7 @@ class Recipe(models.Model):
     cook_time = models.IntegerField()
     serving_size = models.IntegerField()
     user = models.ForeignKey(User, on_delete=models.SET_DEFAULT, default=1)
-    image_filename = models.CharField(max_length=255)
+    image = models.ImageField(upload_to="static/images/recipe_images", blank=True)
     tags = models.ManyToManyField("Tag", through="RecipeTag")
     ingredients = models.ManyToManyField("Ingredient", through="IngredientQuantity")
     steps = models.ManyToManyField("RecipeStep")

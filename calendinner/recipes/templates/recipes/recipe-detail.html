@@ -13,14 +13,18 @@
   <p>Uploaded By: {{ recipe.user }}</p>
   <p>Tags: 
     {% for tag in recipe.tags.all %}
-       <p>{{ tag.tag_name }}</p>
+      <p>{{ tag.tag_name }}</p>
     {% endfor %}
   </p>
-  <p>Ingredients: 
-      {% for ingredient in ingredients %}
-        <p> {{ ingredient.ingredient.ingredient_name }} ({{ ingredient.quantity }} {{ ingredient.unit_measure.name }}) </p>
-      {% endfor %}
-  </p>
+  {% comment %} <button hx-get="{% url 'scale-recipe' recipe.id %}?scale={{ request.GET.get('scale') }}" class="button is-primary">Scale</button> {% endcomment %}
+
+  <div id="recipe_ingredients">
+      <p>Ingredients: 
+          {% for ingredient in ingredients %}
+            <p> {{ ingredient.ingredient.ingredient_name }} ({{ ingredient.quantity }} {{ ingredient.unit_measure.name }}) </p>
+          {% endfor %}
+      </p>
+  </div>
 
   <p>Steps:
       {% for step in steps %}
@@ -28,27 +32,25 @@
       {% endfor %}
   </p>
 
-  {% if recipe.image_filename != 'REMOVE THIS' %}
-    <a href="#">
-      <img src="{% static recipe.image_filename %}.jpg">
-    </a>
+  {% if recipe.image %}
+      <img src="{{ recipe.image.url }}">
+
   {% else %}
     <a href="#">
-      <img src="https://placehold.co/500x500" height="100" width="100">
+      <img src="https://placehold.co/500x500" height="200" width="200">
     </a>
   {% endif %}
 
-  <form method="post" action="{% url 'favorites' %}">
-    {% csrf_token %}
-    <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
-    <button type="submit">Add to Favorites</button>
-  </form>
+  {% if user.is_authenticated %}
+    {% if not favorite %}
+        <button name="recipe_id" value="{{ recipe.id }}" hx-post="{% url 'favorites'%}" hx-swap="innerHTML" class="button is-primary">Add to Favorites</button>
+    {% endif %}
+    
+    {% if not in_menu %}
+      <button  name="recipe_id" value="{{ recipe.id }}" hx-post="{% url 'upcoming-menu' %}"hx-swap="innerHTML" class="button is-primary">Add to Upcoming Menu</button>
+    {% endif %}
 
-  <form method="post" action="{% url 'upcoming-menu' %}">
-    {% csrf_token %}
-    <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
-    <button type="submit">Add to Upcoming Menu</button>
-  </form>
+  {% endif %}
 
 </div>
 

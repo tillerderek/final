@@ -9,4 +9,6 @@ urlpatterns = [
     path("favorites/", views.favorites, name="favorites"),
     path("preferences", views.preferences, name="preferences"),
     path("uploaded", views.uploaded, name="uploaded"),
+    path("delete-favorite/<int:recipe_id>", views.delete_favorite, name="delete-favorite"),
+    path("moderator-content", views.moderator_content, name="moderator-content")
 ]

@@ -1,20 +1,28 @@
 from django.shortcuts import render, HttpResponse, redirect
 from django.contrib.auth.decorators import login_required
-from .forms import RecipeForm, RecipeStepForm, IngredientQuantityForm, IngredientForm, ingredient_formset, recipe_step_formset
 from .models import Recipe, RecipeStep, IngredientQuantity, Ingredient, Tag, UnitMeasure
-from django.forms import inlineformset_factory
+from users.models import UserFavorite
+from menus.models import Menu, MenuRecipe
 from django.shortcuts import get_object_or_404
+from django.http import HttpResponseBadRequest, HttpResponseNotFound
 
-
-@login_required
 def recipe_detail(request, recipe_id):
     recipe = Recipe.objects.get(id=recipe_id)
     steps = RecipeStep.objects.filter(recipe_id=recipe)
     ingredients = IngredientQuantity.objects.filter(recipe=recipe)
+    favorite = UserFavorite.objects.filter(user=request.user, recipe=recipe).exists()
+    in_menu = MenuRecipe.objects.filter(recipe=recipe, menu__user=request.user).exists()
+    image = recipe.image
+    
     context = {
       'recipe': recipe,
       'ingredients': ingredients,
-      'steps': steps.all()}
+      'steps': steps.all(),
+      'user': request.user,
+      'favorite': favorite,
+      'in_menu': in_menu,
+      'image': image,
+    }
     return render(request, 'recipes/recipe-detail.html', context)
   
 
@@ -27,7 +35,7 @@ def submit_recipe(request):
         cook_time = request.POST['cook_time']
         serving_size = request.POST['servings']
         user = request.user
-        image_filename = request.POST['image_filename']
+        image = request.FILES.get('image')
         tags = request.POST.getlist('tags')
 
         ingredients = request.POST.getlist('ingredient[]')
@@ -35,7 +43,7 @@ def submit_recipe(request):
         unit_measures = request.POST.getlist('unit_measure[]')
         steps = request.POST.getlist('step[]')
 
-        recipe = Recipe(title=title, description=description, prep_time=prep_time, cook_time=cook_time, serving_size=serving_size, user=user, image_filename=image_filename)
+        recipe = Recipe(title=title, description=description, prep_time=prep_time, cook_time=cook_time, serving_size=serving_size, user=user, image=image)
         recipe.save()
         recipe.tags.add(*tags)
 
@@ -63,19 +71,33 @@ def create_recipe(request):
       'tags': tags,
       'unit_measure': unit_measure,
     }
-    # context = {
-    #   'recipe_form': RecipeForm(),
-    # }
     return render(request, 'recipes/create-recipe.html', context)
 
 def add_ingredient(request):
     unit_measure = UnitMeasure.objects.all()
     return render(request, 'recipes/add-ingredient.html', {'unit_measure': unit_measure})
-    # recipe = Recipe()
-    # formset = ingredient_formset(instance=recipe)
-    # return render(request, 'recipes/add-ingredient.html', {'formset': formset})
 
 def add_step(request):
-    recipe = Recipe()
-    formset = recipe_step_formset(instance=recipe)
-    return render(request, 'recipes/add-step.html', {'formset': formset})
+    return render(request, 'recipes/add-step.html')
+  
+# def scale_recipe(request, recipe_id):
+#     # Get the recipe from the recipe_detail context (assuming it's passed)
+#     recipe = request.GET.get('recipe')  # Access the recipe ID from query string
+
+#     if not recipe:
+#         return HttpResponseNotFound("Recipe not found")
+
+#     # Access ingredients from the context (assuming it's passed)
+#     ingredients = request.GET.get('ingredients')  # Access ingredients as a serialized string (optional)
+
+#     if not ingredients:
+#         return HttpResponseBadRequest("Missing ingredients data")
+
+#     # Implement the scaling logic using the passed ingredients data
+#     # (replace with your actual calculations based on the serialized ingredients data)
+#     scaled_ingredients = []
+#     # ... your scaling logic here ...
+
+#     context = {'scaled_ingredients': scaled_ingredients}
+#     return render(request, 'recipes/scale-recipe.html', context)
+

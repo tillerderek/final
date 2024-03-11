@@ -8,9 +8,6 @@ from recipes.models import Ingredient
 
 
 def home(request):
-    user = request.user if request.user.is_authenticated else None
-    current_week_number = datetime.date.today().isocalendar()[1]
-
     recipes = Recipe.objects.all()
     
     context = {
