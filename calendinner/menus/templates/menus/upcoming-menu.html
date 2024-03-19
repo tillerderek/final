@@ -15,8 +15,13 @@
                 </li>
             {% endfor %}
         </ul>
+        {% if upcoming_recipe|length == 7 %}
+            <p>Menu is full. Approve to lock in the menu.</p>
+            <button hx-patch="{% url 'approve-menu' %}" hx-swap="
+            innerHTML">Approve Menu</button>
+        {% endif %}
     {% else %}
-        <p>No upcoming recipe.</p>
+        <p>Browse and Add Recipes or Come Back Friday For Your Personal Menu!</p>
     {% endif %}
     </div>
 {% endblock %}

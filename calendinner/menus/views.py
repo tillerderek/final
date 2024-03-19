@@ -9,7 +9,11 @@ from django.views.decorators.http import require_http_methods
 
 # Create your views here.
 def current_menu(request):
-    return render(request, 'menus/current-menu.html')
+  
+    current_menu = Menu.objects.filter(is_approved=True).first()
+    current_recipes = MenuRecipe.objects.filter(menu=current_menu)
+    
+    return render(request, 'menus/current-menu.html', {'current_recipes': current_recipes})
   
 def previous_menu(request):
     return render(request, 'menus/previous-menu.html')
@@ -39,7 +43,7 @@ def upcoming_menu(request):
     upcoming_menu = Menu.objects.filter(user=user, date_created__lt=timezone.now() + timezone.timedelta(days=7), is_approved=False).first()
     
     if not upcoming_menu:
-        upcoming_menu = Menu.objects.create(user=user, date_created=timezone.now(), date_start=timezone.now())
+        upcoming_menu = Menu.objects.create(user=user, date_created=timezone.now(), date_start=timezone.now(), is_approved=False)
     
     upcoming_recipe = MenuRecipe.objects.filter(menu=upcoming_menu)
     
@@ -58,8 +62,9 @@ def delete_upcoming_recipe(request, recipe_id):
 def process_draft_menus(request):
     if request.headers.get('Api-Key') == 'zany1061':
       users = User.objects.all()
+      json_responses = []
+      
       for user in users:
-        
         upcoming_menu = Menu.objects.filter(user=user, date_start__lt=timezone.now() + timezone.timedelta(days=7), is_approved=False).first()
         
         if not upcoming_menu:
@@ -76,17 +81,18 @@ def process_draft_menus(request):
                 menu_recipe = MenuRecipe(menu=upcoming_menu, recipe=recipe)
                 menu_recipe.save()
       
-        
         current_menu_recipes = MenuRecipe.objects.filter(menu=upcoming_menu)
         current_recipes_titles = list([recipe.recipe.title for recipe in current_menu_recipes])
         
-        json = {
+        json_data = {
             'recipes': current_recipes_titles,
             'link': 'https://calendinner.com/menus/upcoming-menu',
             'email': user.email,
             'name': user.first_name
         }
-        return JsonResponse(json)
+        json_responses.append(json_data)
+        
+      return JsonResponse(json_responses, safe=False, status=200)
     else:
         return HttpResponse('Unauthorized', status=401)
 
@@ -99,3 +105,13 @@ def process_final_menus(request):
         upcoming_menu.is_approved = True
                 
     return HttpResponse('Success', status=200)
+  
+  
+def approve_menu(request):
+    if request.method == 'PATCH':
+      user = request.user
+      upcoming_menu = Menu.objects.filter(user=user, is_approved=False).first()
+      upcoming_menu.is_approved = True
+      upcoming_menu.save()
+    
+      return HttpResponse('Menu Approved!', status=200)

@@ -31,6 +31,11 @@ header img {
   display: inline-block;
 }
 
+#grid img {
+  max-width: 100px;
+  max-height: 100px;
+}
+
 #card {
   display: grid; 
   grid-template-columns: 1fr;
