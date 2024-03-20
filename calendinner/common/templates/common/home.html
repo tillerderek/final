@@ -2,20 +2,19 @@
 
 {% include "common/header.html" %}
 <main id="main">
-    <h1>Your Weekly Menu Planner</h1>
+    <h2 class="title is-2">Your Weekly Menu Planner</h1>
     {% if user.is_authenticated %}
 
-    <p>Welcome, {{ user.username }}!</p>
+    <h2 class="block">Welcome, {{ user.username }}!</p>
     {% else %}
-    <p>
-      Calendinner populates your calendar with simple dinner recipes, personalized
-      to your diet and tastes.
+    <p class="block">
+      Calendinner fills your calendar with tasty dinner recipes, personalized
+      to your diet.
     </p>
     {% endif %}
-    <h2>Browse our recipes</h2>
-    <div id="grid">
+    <div class="columns is-multiline is-centered">
       {% for recipe in recipes %}
-      <a href="{% url 'recipe_detail' recipe.id %}">
+      <a class="column is-one-quarter" href="{% url 'recipe_detail' recipe.id %}">
         {% include 'recipes/recipe-card.html' with recipe=recipe %}
       </a>
       {% endfor %}

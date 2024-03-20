@@ -11,7 +11,7 @@
         {% for favorite in favorites %}
             <li>
                 <a href="{% url 'recipe_detail' recipe_id=favorite.recipe.pk %}">{{ favorite.recipe.title }}</a>
-                <button hx-delete="{% url 'delete-favorite' recipe_id=favorite.recipe.pk %}" hx-target="#favorites" hx-confirm="Are you sure you want to remove this recipe from your favorites?" hx-swap="#favorites">X</button>
+                <button class="delete" hx-delete="{% url 'delete-favorite' recipe_id=favorite.recipe.pk %}" hx-target="#favorites" hx-confirm="Are you sure you want to remove this recipe from your favorites?" hx-swap="#favorites"></button>
             </li>
         {% endfor %}
     </ul>

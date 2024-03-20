@@ -11,7 +11,7 @@
             {% for recipe in upcoming_recipe %}
                 <li>
                     <a href="{% url 'recipe_detail' recipe_id=recipe.recipe.pk %}">{{ recipe.recipe.title }}</a>
-                    <button hx-delete="{% url 'delete-upcoming-recipe' recipe_id=recipe.recipe.pk %}" hx-target="#upcoming_recipes" hx-confirm="Are you sure you want to remove this recipe from your upcoming menu?" hx-swap="#">X</button>
+                    <button class="delete" hx-delete="{% url 'delete-upcoming-recipe' recipe_id=recipe.recipe.pk %}" hx-target="#upcoming_recipes" hx-confirm="Are you sure you want to remove this recipe from your upcoming menu?" hx-swap="#"></button>
                 </li>
             {% endfor %}
         </ul>
