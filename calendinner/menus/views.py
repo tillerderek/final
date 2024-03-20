@@ -16,7 +16,17 @@ def current_menu(request):
     return render(request, 'menus/current-menu.html', {'current_recipes': current_recipes})
   
 def previous_menu(request):
-    return render(request, 'menus/previous-menu.html')
+  
+    previous_menus = Menu.objects.filter(is_approved=True, date_start__lt=timezone.now()).order_by('-date_start')[:2]
+    
+    for previous_menu in previous_menus:
+        previous_menu.recipes = MenuRecipe.objects.filter(menu=previous_menu)
+        
+    context = {
+        'previous_menus': previous_menus
+    }
+        
+    return render(request, 'menus/previous-menu.html', context)
   
 @login_required
 def upcoming_menu(request):

@@ -57,7 +57,7 @@ def submit_recipe(request):
             step_obj = RecipeStep(recipe_id=recipe, recipe_step=step)
             step_obj.save()
 
-        return redirect('recipe_detail', recipe_id=recipe.id)
+    return redirect('recipe_detail', recipe_id=recipe.id)
 
 
 def create_recipe(request):

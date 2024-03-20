@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.views.decorators.http import require_http_methods
 from . import forms
 from .forms import LoginForm, SignupForm
-from .models import Recipe, UserFavorite, UserProfile
+from .models import Recipe, UserFavorite, UserProfile, UserTagPreference, Tag, User
 from menus.models import Menu, MenuRecipe
 from django.utils import timezone
 from django.http import HttpResponse
@@ -79,7 +79,42 @@ def delete_favorite(request, recipe_id):
 
   
 def preferences(request):
-    return render(request, 'users/preferences.html')
+    if request.method == 'POST':
+        tag_id = request.POST.get('tag_id')
+        user = request.user
+        updated_email = request.POST.get('email')
+        updated_first_name = request.POST.get('first_name')
+        updated_last_name = request.POST.get('last_name')
+        updated_password = request.POST.get('password')
+        u = User.objects.get(username=user)
+        u.set_password(updated_password)
+        user.email = updated_email
+        user.first_name = updated_first_name
+        user.last_name = updated_last_name
+        user.save()
+        u.save()
+        
+        if not UserTagPreference.objects.filter(user=user.id, tag=tag_id).exists():
+            tag = Tag.objects.get(pk=tag_id)
+            preference = UserTagPreference(user=user, tag=tag)
+            preference.save()
+
+        return HttpResponse("Updated preferences")
+      
+  # if get request then render preferences page passing in current user data as context and as placeholder text in template
+    
+    user = request.user
+    user_preferences = UserTagPreference.objects.filter(user=user.id)
+    user_tags = []
+    for preference in user_preferences:
+        user_tags.append(preference.tag)
+    tags = Tag.objects.all()
+    context = {
+        'user_tags': user_tags,
+        'tags': tags,
+        'user': user
+    }
+    return render(request, 'users/preferences.html', context)
   
 def uploaded(request):
     userUploaded = Recipe.objects.filter(user=request.user)

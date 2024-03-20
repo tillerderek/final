@@ -1,1 +1,33 @@
-<h1>prefs</h1>
+{% extends "common/base.html" %} {% block content %}
+
+<h1>User Preferences</h1>
+
+<form
+  method="post"
+  enctype="multipart/form-data"
+  hx-post="{% url 'preferences' %}"
+>
+  {% csrf_token %}
+  <h2>User Details</h2>
+  <label for="email">Email</label>
+  <input type="email" name="email" placeholder="{{ user.email }}" />
+  <label for="first_name">First Name</label>
+  <input type="text" name="first_name" placeholder="{{ user.first_name }}" />
+  <label for="last_name">Last Name</label>
+  <input type="text" name="last_name" placeholder="{{ user.last_name }}" />
+  <label for="password1">New Password</label>
+  <input type="password" name="password1" />
+  <label for="password2">Confirm New Password</label>
+  <input type="password" name="password2" />
+  <div id="tags">
+    <label for="tags">Tags</label>
+        {% for tag in tags %}
+    <label for="tags">{{ tag.tag_name }}</label>
+    <input type="checkbox" name="tags" value="{{ tag.id }}" />
+    {% endfor %}
+  </div>
+
+    <button type="submit" class="button is-primary">Submit Preferences</button>
+  </div>
+</form>
+{% endblock %}
