@@ -16,7 +16,6 @@ header {
   background-size:70px 70px;
   color: #1A2833;
   text-shadow: #fdffdc 0px 0px 15px;
-
 }
 
 #header-buttons {
@@ -26,4 +25,18 @@ header {
 
 main {
   text-align: center;
+}
+
+#dashboard-modal {
+  text-align: center;
+}
+
+.ingredient-list {
+  list-style: disc;
+  margin: 1rem;
+}
+
+.step-list {
+  list-style: disc;
+  margin: 1rem;
 }

@@ -65,7 +65,7 @@ def delete_upcoming_recipe(request, recipe_id):
     recipe = get_object_or_404(MenuRecipe, recipe__pk=recipe_id, menu__user=user)
     recipe.delete()
     
-    upcoming_menu = Menu.objects.filter(user=user, date_start__lt=timezone.now() + timezone.timedelta(days=7), is_approved=False).first()
+    upcoming_menu = Menu.objects.filter(user=user, is_approved=False).first()
     upcoming_recipe = MenuRecipe.objects.filter(menu=upcoming_menu)
     return render(request, 'menus/upcoming-menu.html', {'upcoming_recipe': upcoming_recipe})
   

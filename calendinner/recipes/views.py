@@ -7,11 +7,14 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponseBadRequest, HttpResponseNotFound
 
 def recipe_detail(request, recipe_id):
+    user = request.user
     recipe = Recipe.objects.get(id=recipe_id)
     steps = RecipeStep.objects.filter(recipe_id=recipe)
     ingredients = IngredientQuantity.objects.filter(recipe=recipe)
-    favorite = UserFavorite.objects.filter(user=request.user, recipe=recipe).exists()
-    in_menu = MenuRecipe.objects.filter(recipe=recipe, menu__user=request.user).exists()
+    favorite = UserFavorite.objects.filter(user=user, recipe=recipe).exists()
+    upcoming_menu = Menu.objects.filter(user=user, is_approved=False).first()
+    in_menu = MenuRecipe.objects.filter(recipe=recipe, menu=upcoming_menu).exists()
+    menu_recipe_count = MenuRecipe.objects.filter(menu=upcoming_menu).count()
     image = recipe.image
     
     context = {
@@ -22,6 +25,7 @@ def recipe_detail(request, recipe_id):
       'favorite': favorite,
       'in_menu': in_menu,
       'image': image,
+      'menu_recipe_count': menu_recipe_count,
     }
     return render(request, 'recipes/recipe-detail.html', context)
   

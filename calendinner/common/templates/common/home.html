@@ -12,6 +12,10 @@
       to your diet.
     </p>
     {% endif %}
+    <div class="m-4">
+      <input type="text" id="search" placeholder="Search for recipes" />
+      <button id="search-button">Search</button>
+    </div>
     <div class="columns is-multiline is-centered">
       {% for recipe in recipes %}
       <a class="column is-one-quarter" href="{% url 'recipe_detail' recipe.id %}">
