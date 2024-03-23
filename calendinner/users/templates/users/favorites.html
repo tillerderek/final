@@ -10,7 +10,7 @@
     <ul>
         {% for favorite in favorites %}
             <li>
-                <a class="button is-link is-large" href="{% url 'recipe_detail' recipe_id=favorite.recipe.pk %}">{{ favorite.recipe.title }}</a>
+                <a href="{% url 'recipe_detail' recipe_id=favorite.recipe.pk %}">{{ favorite.recipe.title }}</a>
                 <button class="delete" hx-delete="{% url 'delete-favorite' recipe_id=favorite.recipe.pk %}" hx-target="#favorites" hx-confirm="Are you sure you want to remove this recipe from your favorites?" hx-swap="#favorites"></button>
             </li>
         {% endfor %}

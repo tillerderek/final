@@ -1,33 +1,42 @@
-from django.shortcuts import render, HttpResponse, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Recipe, RecipeStep, IngredientQuantity, Ingredient, Tag, UnitMeasure
 from users.models import UserFavorite
 from menus.models import Menu, MenuRecipe
-from django.shortcuts import get_object_or_404
-from django.http import HttpResponseBadRequest, HttpResponseNotFound
 
 def recipe_detail(request, recipe_id):
     user = request.user
     recipe = Recipe.objects.get(id=recipe_id)
     steps = RecipeStep.objects.filter(recipe_id=recipe)
     ingredients = IngredientQuantity.objects.filter(recipe=recipe)
-    favorite = UserFavorite.objects.filter(user=user, recipe=recipe).exists()
-    upcoming_menu = Menu.objects.filter(user=user, is_approved=False).first()
-    in_menu = MenuRecipe.objects.filter(recipe=recipe, menu=upcoming_menu).exists()
-    menu_recipe_count = MenuRecipe.objects.filter(menu=upcoming_menu).count()
     image = recipe.image
     
-    context = {
-      'recipe': recipe,
-      'ingredients': ingredients,
-      'steps': steps.all(),
-      'user': request.user,
-      'favorite': favorite,
-      'in_menu': in_menu,
-      'image': image,
-      'menu_recipe_count': menu_recipe_count,
-    }
-    return render(request, 'recipes/recipe-detail.html', context)
+    if request.user.is_authenticated:
+        favorite = UserFavorite.objects.filter(user=user, recipe=recipe).exists()
+        upcoming_menu = Menu.objects.filter(user=user, is_approved=False).first()
+        in_menu = MenuRecipe.objects.filter(recipe=recipe, menu=upcoming_menu).exists()
+        menu_recipe_count = MenuRecipe.objects.filter(menu=upcoming_menu).count()
+    
+        context = {
+          'recipe': recipe,
+          'ingredients': ingredients,
+          'steps': steps.all(),
+          'user': request.user,
+          'favorite': favorite,
+          'in_menu': in_menu,
+          'image': image,
+          'menu_recipe_count': menu_recipe_count,
+        }
+        return render(request, 'recipes/recipe-detail.html', context)
+      
+    else:
+        context = {
+          'recipe': recipe,
+          'ingredients': ingredients,
+          'steps': steps.all(),
+          'image': image,
+        }
+        return render(request, 'recipes/recipe-detail.html', context)
   
 
 @login_required
@@ -63,7 +72,7 @@ def submit_recipe(request):
 
     return redirect('recipe_detail', recipe_id=recipe.id)
 
-
+@login_required
 def create_recipe(request):
     tags = Tag.objects.all()
     unit_measure = UnitMeasure.objects.all()
@@ -77,31 +86,11 @@ def create_recipe(request):
     }
     return render(request, 'recipes/create-recipe.html', context)
 
+@login_required
 def add_ingredient(request):
     unit_measure = UnitMeasure.objects.all()
     return render(request, 'recipes/add-ingredient.html', {'unit_measure': unit_measure})
 
+@login_required
 def add_step(request):
     return render(request, 'recipes/add-step.html')
-  
-# def scale_recipe(request, recipe_id):
-#     # Get the recipe from the recipe_detail context (assuming it's passed)
-#     recipe = request.GET.get('recipe')  # Access the recipe ID from query string
-
-#     if not recipe:
-#         return HttpResponseNotFound("Recipe not found")
-
-#     # Access ingredients from the context (assuming it's passed)
-#     ingredients = request.GET.get('ingredients')  # Access ingredients as a serialized string (optional)
-
-#     if not ingredients:
-#         return HttpResponseBadRequest("Missing ingredients data")
-
-#     # Implement the scaling logic using the passed ingredients data
-#     # (replace with your actual calculations based on the serialized ingredients data)
-#     scaled_ingredients = []
-#     # ... your scaling logic here ...
-
-#     context = {'scaled_ingredients': scaled_ingredients}
-#     return render(request, 'recipes/scale-recipe.html', context)
-

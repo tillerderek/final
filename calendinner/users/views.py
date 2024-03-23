@@ -11,7 +11,7 @@ from menus.models import Menu, MenuRecipe
 from django.utils import timezone
 from django.http import HttpResponse
 
-# signup page
+
 def user_signup(request):
     if request.method == 'POST':
         form = SignupForm(request.POST)
@@ -23,7 +23,6 @@ def user_signup(request):
         form = SignupForm()
     return render(request, 'users/signup.html', {'form': form})
   
-  # login page
 def user_login(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
@@ -38,13 +37,10 @@ def user_login(request):
         form = LoginForm()
     return render(request, 'users/login.html', {'form': form})
   
-# logout page
 def user_logout(request):
     logout(request)
     return redirect('home')
-  
-  
-  
+    
 @login_required
 def favorites(request):
     if request.method == 'POST':
@@ -67,6 +63,7 @@ def favorites(request):
 
     return render(request, 'users/favorites.html', context)
 
+@login_required
 @require_http_methods(["DELETE"])
 def delete_favorite(request, recipe_id):
     user = request.user
@@ -77,31 +74,29 @@ def delete_favorite(request, recipe_id):
     favorites = UserFavorite.objects.filter(user=request.user.id)
     return render(request, 'users/favorites.html', {'favorites': favorites})
 
-  
+@login_required
 def preferences(request):
     if request.method == 'POST':
-        tag_id = request.POST.get('tag_id')
-        user = request.user
-        updated_email = request.POST.get('email')
-        updated_first_name = request.POST.get('first_name')
-        updated_last_name = request.POST.get('last_name')
-        updated_password = request.POST.get('password')
-        u = User.objects.get(username=user)
-        u.set_password(updated_password)
-        user.email = updated_email
-        user.first_name = updated_first_name
-        user.last_name = updated_last_name
-        user.save()
-        u.save()
+        # tag_id = request.POST.get('tag_id')
+        # user = request.user
+        # updated_email = request.POST.get('email')
+        # updated_first_name = request.POST.get('first_name')
+        # updated_last_name = request.POST.get('last_name')
+        # updated_password = request.POST.get('password')
+        # u = User.objects.get(username=user)
+        # u.set_password(updated_password)
+        # user.email = updated_email
+        # user.first_name = updated_first_name
+        # user.last_name = updated_last_name
+        # user.save()
+        # u.save()
         
-        if not UserTagPreference.objects.filter(user=user.id, tag=tag_id).exists():
-            tag = Tag.objects.get(pk=tag_id)
-            preference = UserTagPreference(user=user, tag=tag)
-            preference.save()
+        # if not UserTagPreference.objects.filter(user=user.id, tag=tag_id).exists():
+        #     tag = Tag.objects.get(pk=tag_id)
+        #     preference = UserTagPreference(user=user, tag=tag)
+        #     preference.save()
 
         return HttpResponse("Updated preferences")
-      
-  # if get request then render preferences page passing in current user data as context and as placeholder text in template
     
     user = request.user
     user_preferences = UserTagPreference.objects.filter(user=user.id)
@@ -116,15 +111,17 @@ def preferences(request):
     }
     return render(request, 'users/preferences.html', context)
   
+@login_required
 def uploaded(request):
     userUploaded = Recipe.objects.filter(user=request.user)
     
     return render(request, 'users/uploaded.html', {'userUploaded': userUploaded})
-  
+
+@login_required 
 def moderator_content(request):
     return render(request, 'users/moderator-content.html')
   
-  
+@login_required
 def dashboard(request):
     user_profile = request.user.userprofile
     is_moderator = user_profile.is_moderator

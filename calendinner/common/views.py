@@ -9,10 +9,19 @@ from recipes.models import Ingredient
 
 def home(request):
     recipes = Recipe.objects.all()
-    context = {
+    if request.user.is_authenticated:
+      user_profile = request.user.userprofile
+      is_moderator = user_profile.is_moderator
+      
+      context = {
         'recipes': recipes,
         'title': 'Dinner\'s Ready',
-        
+        'is_moderator': is_moderator,
+    }
+    else:
+      context = {
+        'recipes': recipes,
+        'title': 'Dinner\'s Ready',
     }
     return render(request, 'common/home.html', context)
   

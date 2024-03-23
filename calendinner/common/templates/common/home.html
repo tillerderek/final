@@ -1,27 +1,30 @@
 {% extends "common/base.html" %}{% block content %} 
 
 {% include "common/header.html" %}
-<main id="main">
-    <h2 class="title is-2">Your Weekly Menu Planner</h1>
-    {% if user.is_authenticated %}
+  <main id="main" class="container">
+      <h2 class="title is-2">Your Weekly Menu Planner</h1>
+      {% if user.is_authenticated %}
 
-    <h2 class="block">Welcome, {{ user.username }}!</p>
-    {% else %}
-    <p class="block">
-      Calendinner fills your calendar with tasty dinner recipes, personalized
-      to your diet.
-    </p>
-    {% endif %}
-    <div class="m-4">
-      <input type="text" id="search" placeholder="Search for recipes" />
-      <button id="search-button">Search</button>
-    </div>
-    <div class="columns is-multiline is-centered">
-      {% for recipe in recipes %}
-      <a class="column is-one-quarter" href="{% url 'recipe_detail' recipe.id %}">
-        {% include 'recipes/recipe-card.html' with recipe=recipe %}
-      </a>
-      {% endfor %}
-    </div>
-    {% endblock %}
-  </main>
+      <h2 class="block">Welcome, {{ user.username }}!</p>
+      {% else %}
+      <p class="block">
+        Calendinner fills your calendar with tasty dinner recipes, personalized
+        to your diet.
+      </p>
+      {% endif %}
+      <div class="m-4">
+        <input type="text" id="search" placeholder="Search for recipes" />
+        <button id="search-button">Search</button>
+      </div>
+      <div class="columns is-multiline is-centered">
+        {% for recipe in recipes %}
+        <a class="column is-one-quarter" hx-get="{% url 'recipe_detail' recipe.id %}"
+        hx-target="main"
+        hx-swap="main"
+        hx-push-url="true">
+          {% include 'recipes/recipe-card.html' with recipe=recipe %}
+        </a>
+        {% endfor %}
+      </div>
+      {% endblock %}
+    </main>

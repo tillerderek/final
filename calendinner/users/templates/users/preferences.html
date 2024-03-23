@@ -1,33 +1,84 @@
 {% extends "common/base.html" %} {% block content %}
 
-<h1>User Preferences</h1>
+<h1 class="title is-size-1">User Preferences</h1>
 
-<form
-  method="post"
-  enctype="multipart/form-data"
-  hx-post="{% url 'preferences' %}"
->
-  {% csrf_token %}
-  <h2>User Details</h2>
-  <label for="email">Email</label>
-  <input type="email" name="email" placeholder="{{ user.email }}" />
-  <label for="first_name">First Name</label>
-  <input type="text" name="first_name" placeholder="{{ user.first_name }}" />
-  <label for="last_name">Last Name</label>
-  <input type="text" name="last_name" placeholder="{{ user.last_name }}" />
-  <label for="password1">New Password</label>
-  <input type="password" name="password1" />
-  <label for="password2">Confirm New Password</label>
-  <input type="password" name="password2" />
-  <div id="tags">
-    <label for="tags">Tags</label>
+<div class="columns">
+  <div class="column is-half">
+  <form
+    method="post"
+    enctype="multipart/form-data"
+    hx-post="{% url 'preferences' %}"
+  >
+    {% csrf_token %}
+    <h2 class="title size-is-2">User Details</h2>
+    <div class="field">
+      <label class="label" for="email">Email</label>
+      <div class="control">
+        <input
+          class="input"
+          type="email"
+          name="email"
+          placeholder="{{ user.email }}"
+        />
+      </div>
+    </div>
+    <div class="field">
+      <label class="label" for="first_name">First Name</label>
+      <div class="control">
+        <input
+          class="input"
+          type="text"
+          name="first_name"
+          placeholder="{{ user.first_name }}"
+        />
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label" for="last_name">Last Name</label>
+      <div class="control">
+        <input
+          class="input"
+          type="text"
+          name="last_name"
+          placeholder="{{ user.last_name }}"
+        />
+      </div> 
+    </div>
+
+    <div class="field">
+      <label class="label" for="password1">New Password</label>
+      <div class="control">
+        <input class="input" type="password" name="password1" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label" for="password2">Confirm New Password</label>
+      <div class="control">
+        <input class="input" type="password" name="password2" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label" for="tags">Tags</label>
+      <div class="control">
         {% for tag in tags %}
-    <label for="tags">{{ tag.tag_name }}</label>
-    <input type="checkbox" name="tags" value="{{ tag.id }}" />
-    {% endfor %}
-  </div>
+        <label class="label" for="tags">{{ tag.tag_name }}</label>
+        <input
+          class="checkbox"
+          type="checkbox"
+          name="tags"
+          value="{{ tag.id }}"
+        />
+        {% endfor %}
+      </div>
+    </div>
 
-    <button type="submit" class="button is-primary">Submit Preferences</button>
+    <div class="control">
+      <button type="submit" class="button is-primary">Submit Preferences</button>
+    </div>
+  </form>
   </div>
-</form>
+</div>
 {% endblock %}

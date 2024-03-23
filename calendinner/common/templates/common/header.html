@@ -1,95 +1,156 @@
-<header class="columns level">
-  <div class="column is-narrow">
-    {% load static %}
-    <figure class="image is-128x128 ml-4">
-      <img src="{% static 'assets/calendinner_logo.png' %}" height="100px" width="100px"></img>
-    </figure>
+{% load static %}
+<header>
+  <nav class="navbar is-danger" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="{% url 'home' %}">
+        <img src="{% static 'assets/calendinner_logo.png' %}">
+      </a>
+      
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarMenu">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+    
+    <div id="navbarMenu" class="navbar-menu">
+      <div class="navbar-start">
+        <a class="navbar-item" href="{% url 'home' %}">
+          Calendinner
+        </a>
+        
+        {% if request.user.is_authenticated %}
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">
+            Recipes
+          </a>
+          
+          <div class="navbar-dropdown">
+            <a class="navbar-item" hx-get="{% url 'favorites' %}"
+            hx-target="main"
+            hx-swap="main"
+            hx-push-url="true">
+            Favorites
+          </a>
+          <a class="navbar-item is-selected" hx-get="{% url 'uploaded' %}"
+          hx-target="main"
+          hx-swap="main"
+          hx-push-url="true">
+          Personal Recipes
+        </a>
+        <hr class="navbar-divider">
+        <a class="navbar-item" hx-get="{% url 'create-recipe' %}"
+        hx-target="main"
+        hx-swap="main"
+        hx-push-url="true">
+        Add Recipe
+      </a>
+    </div>
   </div>
-  <div class="column">
-    <h1 class="title is-1">Calendinner</h1>
-  </div>
-  </div>
-  <div id="header-buttons" class="column">
-    {% if request.user.is_authenticated %}
-      <button class="js-modal-trigger button is-primary" data-target="dashboard-modal">
-        {{ request.user.username }} 
-      </button>
-      <a class="button is-secondary" href="{% url 'logout' %}">Logout</a>
+  
+  <div class="navbar-item has-dropdown is-hoverable">
+    <a class="navbar-link">
+      Menus
+    </a>
+    
+    <div class="navbar-dropdown">
+      <a class="navbar-item" hx-get="{% url 'upcoming-menu' %}"
+      hx-target="main"
+      hx-swap="main"
+      hx-push-url="true">
+      Upcoming
+    </a>
+    <a class="navbar-item is-selected" hx-get="{% url 'current-menu' %}"
+    hx-target="main"
+    hx-swap="main"
+    hx-push-url="true">
+    Current
+  </a>
+  <a class="navbar-item" hx-get="{% url 'previous-menu' %}"
+  hx-target="main"
+  hx-swap="main"
+  hx-push-url="true">
+  Previous
+</a>
+</div>
+</div>
+
+{% if is_moderator %}
+<a class="navbar-item" hx-get="{% url 'moderator-content' %}"
+hx-target="main"
+hx-swap="main"
+hx-push-url="true">
+Moderator Area
+</a>
+{% endif %}
+
+{% endif %}
+</div>
+
+<div class="navbar-end">
+  <div class="navbar-item">
+    <div class="buttons">
+      {% if request.user.is_authenticated %}
+      <a class="button is-primary" hx-get="{% url 'preferences' %}"
+      hx-target="main"
+      hx-swap="main"
+      hx-push-url="true">
+      <strong>{{ request.user.username }}'s Profile</strong>
+    </a>
+    <a class="button is-light" href="{% url 'logout' %}">
+      Log out {{ request.user.username }} 
+    </a>
     {% else %}
-      <a class="button is-primary" href="{% url 'login' %}">Login</a>
-      <a class="button is-secondary" href="{% url 'signup' %}">Signup</a>
-    {% endif %}
-  </div>
+    <a class="button is-primary" hx-get="{% url 'signup' %}"
+    hx-target="main"
+    hx-swap="main"
+    hx-push-url="true">
+    <strong>Sign up</strong>
+    </a>
+    <a class="button is-light" hx-get="{% url 'login' %}"
+    hx-target="main"
+    hx-swap="main"
+    hx-push-url="true">
+    Log in
+    </a>
+  {% comment %} <button id="js-modal-trigger" class="js-modal-trigger button is-light" data-target="login-modal">
+    Log in
+  </button> {% endcomment %}
+  {% endif %}
+</div>
+</div>
+</div>
+</div>
+</nav>
 </header>
 
-<div id="dashboard-modal" class="modal">
+{% comment %} maybe add a login modal later: {% endcomment %}
+{% comment %} <div id="login-modal" class="modal">
   <div class="modal-background"></div>
   <div class="modal-content">
     <div class="box">
-      <ul>
-        <li>
-          <a id="select"
-            hx-get="{% url 'upcoming-menu' %}"
-            hx-target="#main"
-            hx-swap="#main"
-            >Upcoming Menu</a>
-        </li>
-        <li>
-          <a id="select"
-            hx-get="{% url 'current-menu' %}"
-            hx-target="#main"
-            hx-swap="#main"
-            >Current Menu</a>
-        </li>
-        <li>
-          <a id="select"
-            hx-get="{% url 'previous-menu' %}"
-            hx-target="#main"
-            hx-swap="#main"
-            >Previous Menu</a>
-        </li>
-        <li>
-          <a id="select"
-            hx-get="{% url 'preferences' %}"
-            hx-target="#main"
-            hx-swap="#main"
-            >User/Dietary Preferences</a>
-        </li>
-        <li>
-          <a id="select"
-            hx-get="{% url 'favorites' %}"
-            hx-target="#main"
-            hx-swap="#main"
-            >Favorite Recipes</a>
-        </li>
-        <li>
-          <a id="select"
-            hx-get="{% url 'uploaded' %}"
-            hx-target="#main"
-            hx-swap="#main"
-            >Personal Recipes</a>
-        </li>
-        <li>
-          <a id="select"
-            hx-get="{% url 'create-recipe' %}"
-            hx-target="#main"
-            hx-swap="#main"
-            >Add a Recipe</a>
-        </li>
-        {% if is_moderator %}
-        <li>
-          <a id="select"
-            hx-get="{% url 'moderator-content' %}"
-            hx-target="#main"
-            hx-swap="#main"
-            >Moderator Area</a>
-        </li>
-        {% endif %}
-        <li><a id="select" href="{% url 'home' %}">Home &larr;</a></li>
-      </ul>
-      </div>
+      <h1 class="title is-size-1">Login</h1>
+      <form method="POST" href="{% url 'login' %}">
+        {% csrf_token %}
+        <div class="field">
+          <label class="label">Username</label>
+          <div class="control">
+            <input class="input" type="text" name="username">
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Password</label>
+          <div class="control">
+            <input class="input" type="password" name="password">
+          </div>
+        </div>
+        <button class="button is-primary" type="submit">Login</button>
+        <a hx-get="{% url 'signup' %}">Signup for an Account</a>
+      </form>
+    </div>
   </div>
   <button class="modal-close is-large" aria-label="close"></button>
 </div>
 
-
+<script src="{% static 'js/scripts.js' %}"></script> {% endcomment %}

@@ -1,22 +1,21 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Menu, MenuRecipe, User
 from recipes.models import Recipe
 from django.utils import timezone
-from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
+from django.http import HttpResponseBadRequest
 
-# Create your views here.
+@login_required
 def current_menu(request):
-  
     current_menu = Menu.objects.filter(is_approved=True).first()
     current_recipes = MenuRecipe.objects.filter(menu=current_menu)
     
     return render(request, 'menus/current-menu.html', {'current_recipes': current_recipes})
   
+@login_required
 def previous_menu(request):
-  
     previous_menus = Menu.objects.filter(is_approved=True, date_start__lt=timezone.now()).order_by('-date_start')[:2]
     
     for previous_menu in previous_menus:
@@ -59,16 +58,28 @@ def upcoming_menu(request):
     
     return render(request, 'menus/upcoming-menu.html', {'upcoming_recipe': upcoming_recipe})
 
+@login_required
 @require_http_methods(["DELETE"])
 def delete_upcoming_recipe(request, recipe_id):
     user = request.user
-    recipe = get_object_or_404(MenuRecipe, recipe__pk=recipe_id, menu__user=user)
-    recipe.delete()
-    
     upcoming_menu = Menu.objects.filter(user=user, is_approved=False).first()
-    upcoming_recipe = MenuRecipe.objects.filter(menu=upcoming_menu)
-    return render(request, 'menus/upcoming-menu.html', {'upcoming_recipe': upcoming_recipe})
-  
+
+    if not upcoming_menu:
+        return HttpResponseBadRequest("No upcoming menu found")
+
+    # Retrieve all MenuRecipe objects associated with the upcoming menu and the given recipe_id
+    upcoming_recipes = MenuRecipe.objects.filter(menu=upcoming_menu, recipe__pk=recipe_id)
+
+    # Check if any MenuRecipe objects are found
+    if upcoming_recipes.exists():
+        # Delete all found MenuRecipe objects
+        upcoming_recipes.delete()
+        # After deletion, retrieve the updated list of upcoming recipes
+        upcoming_recipe = MenuRecipe.objects.filter(menu=upcoming_menu)
+        return render(request, 'menus/upcoming-menu.html', {'upcoming_recipe': upcoming_recipe})
+    else:
+        return HttpResponseBadRequest("No matching recipe found in the upcoming menu")
+
 def process_draft_menus(request):
     if request.headers.get('Api-Key') == 'zany1061':
       users = User.objects.all()

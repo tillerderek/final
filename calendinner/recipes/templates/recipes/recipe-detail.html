@@ -2,23 +2,24 @@
 
 {% block content %}
 
-<div id="detail" class="container is-centered">
+<div id="detail" class="container">
   {% load static %}
 
   <h1 class="is-size-1">{{ recipe.title }}</h1>
-  <p>Description: {{ recipe.description }}</p>
-  <p>Prep Time: {{ recipe.prep_time }} minutes</p>
-  <p>Cook Time: {{ recipe.cook_time }} minutes</p>
-  <p>Serving Size: {{ recipe.serving_size }} servings</p>
-  <p>Uploaded By: {{ recipe.user }}</p>
-  <p>Tags: 
+  <ul>
+    <li><strong>Description:</strong> {{ recipe.description }}</li>
+    <li><strong>Prep Time:</strong> {{ recipe.prep_time }} minutes</li>
+    <li><strong>Cook Time:</strong> {{ recipe.cook_time }} minutes</li>
+    <li><strong>Serving Size:</strong> {{ recipe.serving_size }} servings</li>
+    <li><strong>Uploaded By:</strong> {{ recipe.user }}</li>
+    <li><strong>Tags:</strong>
     {% for tag in recipe.tags.all %}
-      <p class="tag is-danger">{{ tag.tag_name }}</p>
+      <li class="tag is-danger">{{ tag.tag_name }}</li>
     {% endfor %}
-  </p>
+    </li>
 
   <div id="recipe_ingredients">
-      <p>Ingredients:</p>
+      <strong><li>Ingredients:</li></strong>
         <ul>
           {% for ingredient in ingredients %}
             <li class="ingredient-list"> {{ ingredient.ingredient.ingredient_name }} ({{ ingredient.quantity }} {{ ingredient.unit_measure.name }}) </li>
@@ -26,7 +27,7 @@
         </ul>
   </div>
 
-  <p>Steps:</p>
+  <strong><li>Steps:</li></strong>
     <ul>
       {% for step in steps %}
         <li class="step-listv">{{ step.recipe_step }}</li>

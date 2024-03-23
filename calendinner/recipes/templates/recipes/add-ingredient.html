@@ -1,11 +1,23 @@
 <hr>
-<label for="ingrediennt">Ingredient</label>
-<input type="text" name="ingredient[]" />
-<label for="quantity">Quantity</label>
-<input type="number" name="quantity[]" />
-<label for="unit_measure">Unit of Measurement</label>
-<select name="unit_measure[]">
-  {% for unit in unit_measure %}
-  <option value="{{ unit.id }}">{{ unit.name }}</option>
-  {% endfor %}
-</select>
+<div id="recipe_ingredient">
+  <div class="field-is-grouped">
+    <div class="control">
+      <label for="ingredient">Ingredient</label>
+      <input type="text" name="ingredient[]" />
+    </div>
+
+    <div class="control">
+      <label for="quantity">Quantity</label>
+      <input type="number" name="quantity[]" />
+    </div>
+
+    <div class="control">
+      <label for="unit_measure">Unit of Measurement</label>
+      <select name="unit_measure[]">
+        {% for unit in unit_measure %}
+        <option value="{{ unit.id }}">{{ unit.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+</div>
