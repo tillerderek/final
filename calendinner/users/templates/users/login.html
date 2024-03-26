@@ -1,6 +1,13 @@
-<h1 class="title is-size-1">Login</h1>
-<form method="POST">
-  {% csrf_token %} {{ form.as_p }}
-  <button type="submit">Login</button>
-  <a href="{% url 'signup' %}">No Account? Sign up!</a>
-</form>
+<div class="box">
+  <h1 class="title is-size-1">Login</h1>
+  <form method="POST">
+    {% csrf_token %} 
+    <div class="field">
+      <div class="control">
+        {{ form.as_p }}
+      </div>
+    </div>
+    <button class="control button is-primary" type="submit">Login</button>
+    <a href="{% url 'signup' %}">No Account? Sign up!</a>
+  </form>
+</div>

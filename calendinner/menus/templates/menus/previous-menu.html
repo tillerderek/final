@@ -1,23 +1,25 @@
-{% extends "common/base.html" %}
-
-{% block title %}Previous Menus{% endblock %}
-
+{% extends "common/base.html" %} {% block title %}Previous Menus{% endblock %}
 {% block content %}
-    <h1 class="title is-size-1">Previous Menus</h1>
-    
-    {% if previous_menus %}
-        {% for menu in previous_menus %}
-            <h2>{{ menu.date_start }}</h2>
-            <ul>
-                {% for recipe in previous_menus.recipes %}
-                    <li>{{ recipe.title }}</li>
-                {% endfor %}
-            </ul>
-            <hr>
-        {% endfor %}
-        <hr>
-    {% else %}
-        <p>No recipes are available.</p>
-    {% endif %}
-{% endblock %}
-```
+<h1 class="title is-size-1">Previous Menus</h1>
+
+{% if previous_menus %} {% for menu in previous_menus %}
+<h2>{{ menu.date_start }}</h2>
+<ul>
+  {% for recipe in previous_menus.recipes %}
+  <li>
+    <a
+      hx-get="{% url 'recipe_detail' recipe_id=recipe.recipe.pk %}"
+      hx-target="main"
+      hx-push-url="true"
+    >
+      {{ recipe.recipe.title }}
+    </a>
+  </li>
+  {% endfor %}
+</ul>
+<hr />
+{% endfor %}
+<hr />
+{% else %}
+<p>No recipes are available.</p>
+{% endif %} {% endblock %} ```

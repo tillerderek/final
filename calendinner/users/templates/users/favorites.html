@@ -5,16 +5,22 @@
 {% block content %}
 
 <h1 class="title is-size-1">{{ title }}</h1>
-  <div id="favorites">
+  <div id="favorites" class="columns">
     {% if favorites %}
-    <ul>
+    <ul class="column">
         {% for favorite in favorites %}
             <li>
-                <a href="{% url 'recipe_detail' recipe_id=favorite.recipe.pk %}">{{ favorite.recipe.title }}</a>
+                <a hx-get="{% url 'recipe_detail' recipe_id=favorite.recipe.pk %}"
+                hx-swap="main"
+                hx-target="main"
+                >
+                {{ favorite.recipe.title }}
+                </a>
                 <button class="delete" hx-delete="{% url 'delete-favorite' recipe_id=favorite.recipe.pk %}" hx-target="#favorites" hx-confirm="Are you sure you want to remove this recipe from your favorites?" hx-swap="#favorites"></button>
             </li>
         {% endfor %}
     </ul>
     {% endif %}
+    {% comment %} <div class="column is-three-quarters" id="fav_card"></div> {% endcomment %}
   </div>
 {% endblock %}

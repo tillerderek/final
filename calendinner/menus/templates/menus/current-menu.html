@@ -9,7 +9,11 @@
       <ul>
         {% for recipe in current_recipes %}
         <li>
-          <a href="{% url 'recipe_detail' recipe_id=recipe.recipe.pk %}">{{ recipe.recipe.title }}</a>
+          <a hx-get="{% url 'recipe_detail' recipe_id=recipe.recipe.pk %}"
+          hx-target="main"
+          hx-push-url="true">
+            {{ recipe.recipe.title }}
+          </a>
         </li>
         {% endfor %}
     {% else %}

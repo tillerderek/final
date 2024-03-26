@@ -2,6 +2,9 @@
 
 {% block content %}
 
+<a id="back_button" href="{% url 'home' %}" class="button is-link">
+  &#60; back
+  </a>
 <div id="detail" class="container">
   {% load static %}
 
@@ -19,7 +22,7 @@
     </li>
 
   <div id="recipe_ingredients">
-      <strong><li>Ingredients:</li></strong>
+      <strong><li  class="is-underlined">Ingredients:</li></strong>
         <ul>
           {% for ingredient in ingredients %}
             <li class="ingredient-list"> {{ ingredient.ingredient.ingredient_name }} ({{ ingredient.quantity }} {{ ingredient.unit_measure.name }}) </li>
@@ -27,12 +30,12 @@
         </ul>
   </div>
 
-  <strong><li>Steps:</li></strong>
-    <ul>
+  <strong><li class="is-underlined">Steps:</li></strong>
+    <ol>
       {% for step in steps %}
         <li class="step-listv">{{ step.recipe_step }}</li>
       {% endfor %}
-    </ul>
+    </ol>
 
     {% if recipe.image %}
         <img src="{{ recipe.image.url }}">
@@ -51,5 +54,6 @@
       {% endif %}
  {% endif %}
 </div>
+
 
 {% endblock %}

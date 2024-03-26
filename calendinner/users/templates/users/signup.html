@@ -1,7 +1,13 @@
-<h1>Signup</h1>
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Signup</button>
-    <a href="{% url 'login' %}">Already have account?</a>
-</form>
+<div class="box">
+  <h1 class="title is-size-1">Signup</h1>
+  <form method="POST">
+    {% csrf_token %} 
+    <div class="field-is-grouped">
+      <div class="control">
+        {{ form.as_p }}
+      </div>
+      <button class="control button is-primary" type="submit">Signup</button>
+      <a href="{% url 'login' %}">Already have account?</a>
+    </div>
+  </form>
+</div>
